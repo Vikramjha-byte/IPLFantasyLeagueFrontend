@@ -1,13 +1,13 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "../Home/Home";
-import Login from "../Login/Login";
-import Register from "../Register/Register";
+import Login from "../User_Module/Login/Login";
+import Register from "../User_Module/Register/Register";
 import ListUser from "../components/ListUser"
 import UpMatches from "../UpMatches/UpMatches";
-import AdminLogin from "../AdminLogin/AdminLogin";
-import AdminRegister from "../AdminRegister/AdminRegister";
-import AdminDashboard from "../AdminDashboard/AdminDashboard";
+import AdminLogin from "../Admin_Module/AdminLogin/AdminLogin";
+import AdminRegister from "../Admin_Module/AdminRegister/AdminRegister";
+import AdminDashboard from "../Admin_Module/AdminDashboard/AdminDashboard";
 function RouterComp() {
   return (
     <div>

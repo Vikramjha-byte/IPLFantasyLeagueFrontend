@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import UserService from "../Services/UserService";
-import "./login.css";
-function Login() {
-
-  //Getting Values in the variable
+import AdminService from "../../Services/AdminService";
+import "../Login/login.css";
+function AdminLogin() {
+  //Using the state for the values
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   let [userNameErr, setUserNameErr] = useState("");
@@ -12,7 +11,6 @@ function Login() {
   const navigate = useNavigate();
   let isValid = false;
   let errorDetails = "";
-
   //Validating the form
   const validateTheForm = () => {
     let userNameErr,
@@ -35,21 +33,19 @@ function Login() {
       isValid = true;
     }
   };
-
   //Validating the user
-
   const validateTheUser = () => {
-    const user = {
+    const admin = {
       username: username,
       password: password,
     };
     if (isValid === true) {
-      UserService.doUserLogin(user)
+      AdminService.doAdminLogin(admin)
         .then((res) => {
           const data = res.data;
           console.log(data.name);
-          alert("User Logged In");
-          navigate("/user_dashboard");
+          alert("Admin Logged In");
+          navigate("/admin/dashboard");
         })
         .catch((error) => {
           errorDetails = error.response.data;
@@ -57,14 +53,12 @@ function Login() {
         });
     }
   };
-
-  //Cleaing the input
+  //clearing the form
   const clearTheForm = () => {
     setUsername("");
     setPassword("");
   };
-
-  //handling the login on the button click
+  //Handling login
   const handleLogin = (e) => {
     e.preventDefault();
     validateTheForm();
@@ -134,7 +128,7 @@ function Login() {
           </div>
           <p className="text-center loginRegister text-muted">
             Not a Member?{" "}
-            <Link className="text-decoration-none" to="/registerbidder">
+            <Link className="text-decoration-none" to="/registeradmin">
               Register
             </Link>
           </p>
@@ -144,4 +138,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default AdminLogin;

@@ -1,51 +1,50 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AdminService from "../Services/AdminService";
-import "../Login/login.css";
-function AdminLogin() {
-  //Using the state for the values
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+import AdminService from "../../Services/AdminService";
+
+function AdminRegister() {
+  //Setting the state using useState
+  const [username, setUserName] = useState("");
+  const [Password, setPassword] = useState("");
+  const navigate = useNavigate();
   let [userNameErr, setUserNameErr] = useState("");
   let [passwordErr, setPasswordErr] = useState("");
-  const navigate = useNavigate();
-  let isValid = false;
+  let isValid = "";
   let errorDetails = "";
   //Validating the form
   const validateTheForm = () => {
     let userNameErr,
       passwordErr = "";
-    isValid = true;
+    isValid = false;
     if (username.length < 6) {
-      userNameErr = "UserName can't be Empty";
+      userNameErr = "Please Enter valid username";
     }
-    if (password.length < 6) {
-      passwordErr = "Password length should be of six characters";
+    if (
+      !Password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9_])/)
+    ) {
+      passwordErr = "Please enter the valid password";
     }
-
     if (userNameErr || passwordErr) {
       setUserNameErr(userNameErr);
       setPasswordErr(passwordErr);
-      isValid = false;
     } else {
       setUserNameErr(userNameErr);
       setPasswordErr(passwordErr);
       isValid = true;
     }
   };
-  //Validating the user
-  const validateTheUser = () => {
+  //Submitting the Data
+  const submitTheData = () => {
     const admin = {
-      username: username,
-      password: password,
+    username: username,
+      password: Password,
+      
     };
     if (isValid === true) {
-      AdminService.doAdminLogin(admin)
+      AdminService.doAdminRegistration(admin)
         .then((res) => {
-          const data = res.data;
-          console.log(data.name);
-          alert("Admin Logged In");
-          navigate("/admin/dashboard");
+          alert("You are successfully registered,Click OK to proceed...");
+          navigate("/master_admin");
         })
         .catch((error) => {
           errorDetails = error.response.data;
@@ -53,33 +52,33 @@ function AdminLogin() {
         });
     }
   };
-  //clearing the form
+  //Clearing the form
   const clearTheForm = () => {
-    setUsername("");
+    setUserName("");
     setPassword("");
   };
-  //Handling login
-  const handleLogin = (e) => {
+//handling the Registration
+  const handleRegister = (e) => {
     e.preventDefault();
     validateTheForm();
-    validateTheUser();
+    submitTheData();
     clearTheForm();
   };
   return (
-    <div className="container-fluid loginParent ">
+    <div className="container-fluid registerParent ">
       <div className="row">
-        <div className="col-md-8 col-lg-5 col-12 p-0 d-flex flex-column align-items-center loginContainer bg-light">
-          <h1>Login</h1>
+        <div className="col-md-8 col-lg-5 col-12 p-0 d-flex flex-column align-items-center registerContainer bg-light">
+          <h1>Register</h1>
 
-          <div className="card loginCard align-items-center rounded-3">
+          <div className="card registerCard align-items-center rounded-3">
             <div className="w-100 mt-4  d-flex flex-row justify-content-around social_btn">
-              <button className="btn loginFacebookBtn  btn-outline-primary text-center p-2 pe-4">
+              <button className="btn registerFacebookBtn  btn-outline-primary text-center p-2 pe-4">
                 <span className="m-3">
                   <i class="fa-brands fa-facebook-square"></i>
                 </span>
                 Facebook
               </button>
-              <button className="btn loginGoogleBtn btn-outline-primary text-center p-2 pe-4">
+              <button className="btn registerGoogleBtn btn-outline-primary text-center p-2 pe-4">
                 <span className="m-3">
                   <i class="fa-brands fa-google"></i>
                 </span>
@@ -98,38 +97,44 @@ function AdminLogin() {
                   id="username"
                   className="form-control"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e) => setUserName(e.target.value)}
                 />
-                <p class="error">{userNameErr}</p>
+                <p className="error">{userNameErr}</p>
               </div>
               <div className="p-3 mt-1 formInput">
-                <label htmlFor="password" className="text-muted">
+                <label htmlFor="Password" className="text-muted">
                   Password
                 </label>
                 <input
                   type="password"
-                  name="password"
-                  id="password"
+                  name="Password"
+                  id="Password"
                   className="form-control"
-                  value={password}
+                  value={Password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <p class="error">{passwordErr}</p>
+                <p className="error">{passwordErr}</p>
               </div>
               <div className="p-3 mt-1 formInput">
                 <button
-                  onClick={handleLogin}
-                  className="btn btn-success w-100 rounded-3 text-uppercase "
+                  onClick={handleRegister}
+                  className="btn btn-success w-100 rounded-3"
                 >
-                  Proceed
+                  Register
                 </button>
+                <p className="text-center  registerAgreement">
+                  By registering, I agree to fantasy{" "}
+                  <Link className="text-decoration-none " to="/">
+                    T&Cs
+                  </Link>
+                </p>
               </div>
             </form>
           </div>
-          <p className="text-center loginRegister text-muted">
-            Not a Member?{" "}
-            <Link className="text-decoration-none" to="/registeradmin">
-              Register
+          <p className="text-center registerLogin text-muted">
+            Already a user?{" "}
+            <Link className="text-decoration-none" to="/master_admin">
+              Login
             </Link>
           </p>
         </div>
@@ -138,4 +143,4 @@ function AdminLogin() {
   );
 }
 
-export default AdminLogin;
+export default AdminRegister;

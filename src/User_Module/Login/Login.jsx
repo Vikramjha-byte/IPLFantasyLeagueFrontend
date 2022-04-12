@@ -1,50 +1,55 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AdminService from "../Services/AdminService";
+import UserService from "../../Services/UserService";
+import "./login.css";
+function Login() {
 
-function AdminRegister() {
-  //Setting the state using useState
-  const [username, setUserName] = useState("");
-  const [Password, setPassword] = useState("");
-  const navigate = useNavigate();
+  //Getting Values in the variable
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   let [userNameErr, setUserNameErr] = useState("");
   let [passwordErr, setPasswordErr] = useState("");
-  let isValid = "";
+  const navigate = useNavigate();
+  let isValid = false;
   let errorDetails = "";
+
   //Validating the form
   const validateTheForm = () => {
     let userNameErr,
       passwordErr = "";
-    isValid = false;
+    isValid = true;
     if (username.length < 6) {
-      userNameErr = "Please Enter valid username";
+      userNameErr = "UserName can't be Empty";
     }
-    if (
-      !Password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9_])/)
-    ) {
-      passwordErr = "Please enter the valid password";
+    if (password.length < 6) {
+      passwordErr = "Password length should be of six characters";
     }
+
     if (userNameErr || passwordErr) {
       setUserNameErr(userNameErr);
       setPasswordErr(passwordErr);
+      isValid = false;
     } else {
       setUserNameErr(userNameErr);
       setPasswordErr(passwordErr);
       isValid = true;
     }
   };
-  //Submitting the Data
-  const submitTheData = () => {
-    const admin = {
-    username: username,
-      password: Password,
-      
+
+  //Validating the user
+
+  const validateTheUser = () => {
+    const user = {
+      username: username,
+      password: password,
     };
     if (isValid === true) {
-      AdminService.doAdminRegistration(admin)
+      UserService.doUserLogin(user)
         .then((res) => {
-          alert("You are successfully registered,Click OK to proceed...");
-          navigate("/master_admin");
+          const data = res.data;
+          console.log(data.name);
+          alert("User Logged In");
+          navigate("/user_dashboard");
         })
         .catch((error) => {
           errorDetails = error.response.data;
@@ -52,33 +57,35 @@ function AdminRegister() {
         });
     }
   };
-  //Clearing the form
+
+  //Cleaing the input
   const clearTheForm = () => {
-    setUserName("");
+    setUsername("");
     setPassword("");
   };
-//handling the Registration
-  const handleRegister = (e) => {
+
+  //handling the login on the button click
+  const handleLogin = (e) => {
     e.preventDefault();
     validateTheForm();
-    submitTheData();
+    validateTheUser();
     clearTheForm();
   };
   return (
-    <div className="container-fluid registerParent ">
+    <div className="container-fluid loginParent ">
       <div className="row">
-        <div className="col-md-8 col-lg-5 col-12 p-0 d-flex flex-column align-items-center registerContainer bg-light">
-          <h1>Register</h1>
+        <div className="col-md-8 col-lg-5 col-12 p-0 d-flex flex-column align-items-center loginContainer bg-light">
+          <h1>Login</h1>
 
-          <div className="card registerCard align-items-center rounded-3">
+          <div className="card loginCard align-items-center rounded-3">
             <div className="w-100 mt-4  d-flex flex-row justify-content-around social_btn">
-              <button className="btn registerFacebookBtn  btn-outline-primary text-center p-2 pe-4">
+              <button className="btn loginFacebookBtn  btn-outline-primary text-center p-2 pe-4">
                 <span className="m-3">
                   <i class="fa-brands fa-facebook-square"></i>
                 </span>
                 Facebook
               </button>
-              <button className="btn registerGoogleBtn btn-outline-primary text-center p-2 pe-4">
+              <button className="btn loginGoogleBtn btn-outline-primary text-center p-2 pe-4">
                 <span className="m-3">
                   <i class="fa-brands fa-google"></i>
                 </span>
@@ -97,44 +104,38 @@ function AdminRegister() {
                   id="username"
                   className="form-control"
                   value={username}
-                  onChange={(e) => setUserName(e.target.value)}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
-                <p className="error">{userNameErr}</p>
+                <p class="error">{userNameErr}</p>
               </div>
               <div className="p-3 mt-1 formInput">
-                <label htmlFor="Password" className="text-muted">
+                <label htmlFor="password" className="text-muted">
                   Password
                 </label>
                 <input
                   type="password"
-                  name="Password"
-                  id="Password"
+                  name="password"
+                  id="password"
                   className="form-control"
-                  value={Password}
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <p className="error">{passwordErr}</p>
+                <p class="error">{passwordErr}</p>
               </div>
               <div className="p-3 mt-1 formInput">
                 <button
-                  onClick={handleRegister}
-                  className="btn btn-success w-100 rounded-3"
+                  onClick={handleLogin}
+                  className="btn btn-success w-100 rounded-3 text-uppercase "
                 >
-                  Register
+                  Proceed
                 </button>
-                <p className="text-center  registerAgreement">
-                  By registering, I agree to fantasy{" "}
-                  <Link className="text-decoration-none " to="/">
-                    T&Cs
-                  </Link>
-                </p>
               </div>
             </form>
           </div>
-          <p className="text-center registerLogin text-muted">
-            Already a user?{" "}
-            <Link className="text-decoration-none" to="/master_admin">
-              Login
+          <p className="text-center loginRegister text-muted">
+            Not a Member?{" "}
+            <Link className="text-decoration-none" to="/registerbidder">
+              Register
             </Link>
           </p>
         </div>
@@ -143,4 +144,4 @@ function AdminRegister() {
   );
 }
 
-export default AdminRegister;
+export default Login;

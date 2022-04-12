@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import UserService from "../Services/UserService";
+import UserService from "../../Services/UserService";
 import "./register.css";
 function Register() {
   //Getting the value
