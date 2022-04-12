@@ -1,0 +1,5 @@
+.navigation > li {
+  text-decoration: none;
+  list-style: none;
+  margin: 2px;
+}

@@ -1,0 +1,16 @@
+.league_new{
+    border-radius: 40px;
+    width: 75vw;
+    height: auto;
+}
+.top_title{
+    font-size: 50px;
+}
+.sub_title{
+    font-size: 20px;
+    color: rgb(2, 29, 2);
+}
+.trophy{
+    font-size: 120px;
+    color: rgb(203, 212, 72);
+}
