@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AdminService from "../../Services/AdminService";
-import "../Login/login.css";
+import "../AdminLogin/login.css"
 function AdminLogin() {
   //Using the state for the values
   const [username, setUsername] = useState("");

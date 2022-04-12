@@ -1,0 +1,61 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+}
+.loginParent {
+  background: linear-gradient(to bottom, rgba(205, 208, 222, 0.52), rgba(38, 171, 84, 0.466)),url("https://images.pexels.com/photos/61143/pexels-photo-61143.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  background-repeat: no-repeat;
+  object-fit: cover;
+  background-size: cover;
+}
+.loginContainer {
+  height: 100vh;
+}
+.loginContainer > h1 {
+  width: 100%;
+  padding: 15px;
+  font-size: 15px;
+  text-align: center;
+  background-color: rgb(71 105 90);
+  color: white;
+}
+.loginCard {
+  width: 90%;
+}
+.formInput > label {
+  font-size: 12px;
+  font-weight: bold;
+}
+.formInput > input {
+  border: none;
+  border-bottom: 2px solid gray;
+  background: none;
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  outline: none;
+}
+.formInput > input:focus {
+  outline: none;
+}
+ .error{
+  color:red;
+  font-weight: 500;
+  margin-top: 20px;
+}
+.formInput>button{
+    font-size: 12px;
+    background-color: rgb(50, 187, 50);
+    border: none;
+}
+.loginRegister {
+  color: black;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.loginRegister > a {
+  color: blue;
+  font-size: 12px;
+  font-weight: bold;
+}
