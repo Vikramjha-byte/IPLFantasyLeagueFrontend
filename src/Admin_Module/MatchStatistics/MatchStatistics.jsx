@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import AdminService from "../../Services/AdminService";
 import AdminHeader from "../AdminDashboard/AdminHeader/AdminHeader";
 import "./matchstatistics.css";
@@ -22,32 +23,52 @@ function MatchStatistics() {
                     <div className="ms-3 mt-2">Match {match.match_id}</div>
                     <div className="d-flex flex-row justify-content-around align-items-center">
                       <div className="d-flex flex-column align-items-center">
-                        <img className="img-fluid stats_img" src={match.teamdetails.photos} alt="Logo" />
+                        <img
+                          className="img-fluid stats_img"
+                          src={match.teamdetails.photos}
+                          alt="Logo"
+                        />
                         <h6 className="mt-2">{match.teamdetails.team_name}</h6>
                       </div>
                       <div className="d-flex flex-column  align-items-center ">
                         <p className="m-0 text-muted fs-2">Vs</p>
-                        <p className="m-0 date">{match.match_date} | {match.match_time}</p>
+                        <p className="m-0 date">
+                          {match.match_date} | {match.match_time}
+                        </p>
                         <p className="text-danger fw-bold text-capitalize">
                           {match.winner}
                         </p>
                       </div>
                       <div className="d-flex flex-column align-items-center">
-                        <img className="img-fluid stats_img" src={match.teamdetails2.photos} alt="Logo" />
+                        <img
+                          className="img-fluid stats_img"
+                          src={match.teamdetails2.photos}
+                          alt="Logo"
+                        />
                         <h6 className="mt-2">{match.teamdetails2.team_name}</h6>
                       </div>
                     </div>
                     <div className="text-center">
-                      <button className="btn btn-success mb-4">
+                      <Link to={`/admin/result/${match.match_id}`}
+                        className="btn btn-success mb-4"
+                      >
                         Update Result
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
               ))
-            : null}
+            : (
+              <div className="d-flex flex-column align-items-center justify-content-center">
+                <img className="w-25" src="../img/upmatch_image.png" alt="" />
+                <h3 className="p-3 m-3 nomatch_header fw-bold ">
+                  No earlier matches available...</h3>
+              </div>
+            )}
         </div>
       </div>
+
+    
     </div>
   );
 }

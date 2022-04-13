@@ -12,6 +12,7 @@ import ManageTournament from "../Admin_Module/ManageTournament/ManageTournament"
 import ManageTeam from "../Admin_Module/ManageTeam/ManageTeam";
 import UpdateTeam from "../Admin_Module/AdminDashboard/UpdateTeam/UpdateTeam";
 import MatchStatistics from "../Admin_Module/MatchStatistics/MatchStatistics";
+import UpdateResult from "../Admin_Module/UpdateResult/UpdateResult";
 function RouterComp() {
   return (
     <div>
@@ -28,6 +29,7 @@ function RouterComp() {
           <Route path="/admin/manageteams" element={<ManageTeam/>}/>
           <Route path="/admin/updateteam/:team_id" element={<UpdateTeam />} />
           <Route path="/admin/matchstats" element={<MatchStatistics/>}/>
+          <Route path="/admin/result/:match_id" element={<UpdateResult/>}/>
       </Routes>
     </div>
   );

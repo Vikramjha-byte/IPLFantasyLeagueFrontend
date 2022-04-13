@@ -9,6 +9,8 @@ const ADMIN_API_UPDATE_TEAMDATA_BY_ID =
   "http://localhost:8085/admin/update-teamData";
 const ADMIN_API_Match_Stats = "http://localhost:8085/admin/matches";
 
+const ADMIN_API_GET_MATCH_BY_ID = "http://localhost:8085/admin/match";
+
 class AdminService {
   async doAdminRegistration(admin) {
     return await axios.post(ADMIN_API_REGISTRATION_URL, admin);
@@ -40,6 +42,9 @@ class AdminService {
       ADMIN_API_UPDATE_TEAMDATA_BY_ID + `/${team_id}`,
       data
     );
+  }
+  async getMatchById(match_id) {
+    return await axios.get(ADMIN_API_GET_MATCH_BY_ID + `/${match_id}`);
   }
 
   async getMatches() {

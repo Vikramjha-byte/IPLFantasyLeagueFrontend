@@ -10,3 +10,9 @@ font-size: 12px;
     background-color: azure;
 
 }
+.nomatch_header{
+    border-radius: 12px;
+    color: #096009;
+    background: #ffffff3b;
+    box-shadow: 4px 3px 8px #00000059;
+}
