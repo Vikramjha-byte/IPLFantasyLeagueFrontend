@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ListUser from './components/ListUser';
+// import ListUser from './components/ListUser';
 // import Home from './Home/Home';
 import RouterComp from './RouterComp/RouterComp';
 

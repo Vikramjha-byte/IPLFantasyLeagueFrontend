@@ -16,7 +16,7 @@ function Card() {
           </div>
           <div class="prices_cta">
             <div class="league_prizes">
-              <span className="btn btn-success fs-6 me-3">PRIZES</span>Autographed Merchandise and much more.
+              <span className="btn btn-success fs-6 me-3">?</span>Why only watching the game,let's play.
             </div>
             <div class="league_cta d-flex justify-content-center align-items-center">
               <Link to="/daily/home" className="btn btn-lg w-75 btn-outline-primary mt-4 rounded-6  text-center">Play Fantasy</Link>

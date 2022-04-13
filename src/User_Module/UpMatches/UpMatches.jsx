@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import UserService from "../Services/UserService";
+import UserService from "../../Services/UserService";
 // import { Link } from "react-router-dom";
 import "./upmatches.css";
 function UpMatches() {
@@ -10,7 +10,7 @@ function UpMatches() {
   let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   let yyyy = today.getFullYear();
 
-  today = yyyy + "-" + dd + "-" + mm;
+  today = yyyy + "-" + mm + "-" + dd;
 
   let currentTime = new Date().toLocaleTimeString([], {
     hour: "2-digit",

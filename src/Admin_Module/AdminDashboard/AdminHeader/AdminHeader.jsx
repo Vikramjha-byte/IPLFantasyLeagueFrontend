@@ -6,37 +6,37 @@ function AdminHeader() {
     <>
         <>
 
-    <nav class="navbar navbar-light bg-light" aria-label="IPLFANTASY">
-      <div class="container-fluid">
-        <Link class="navbar-brand" to="#">
+    <nav className="navbar navbar-dark  position-fixed w-100 admin_nav" aria-label="IPLFANTASY">
+      <div className="container-fluid">
+        <Link className="navbar-brand btn btn-dark text-white" to="/admin/dashboard">
         IPLFantasy
         </Link>
-        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <button className="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
         </button>
   
-        <div class="navbar-collapse collapse" id="navbarsExample01" >
-          <ul class="navbar-nav me-auto mb-2">
-            <li class=" ms-3 nav-item">
-              <Link class="nav-link active" aria-current="page" to="/home">Manage Tournament</Link>
+        <div className="navbar-collapse collapse" id="navbarsExample01" >
+          <ul className="navbar-nav me-auto mb-2">
+            <li className=" ms-3 nav-item">
+              <Link className="nav-link  fw-bold" aria-current="page" to="/admin/managetournament">Manage Tournament</Link>
             </li>
-            <li class=" ms-3 nav-item">
-              <Link class="nav-link active" aria-current="page" to="/about">Manage Team</Link>
+            <li className=" ms-3 nav-item">
+              <Link className="nav-link  fw-bold" aria-current="page" to="/admin/manageteams">Manage Team</Link>
             </li>
-            <li class=" ms-3 nav-item">
-              <Link class="nav-link active" aria-current="page" to="/contact">Match Statistics</Link>
+            <li className=" ms-3 nav-item">
+              <Link className="nav-link fw-bold" aria-current="page" to="/admin/matchstats">Match Statistics</Link>
             </li>
-            <li class=" ms-3 nav-item">
-              <Link class="nav-link active" aria-current="page" to="/write">Schedule Match</Link>
+            <li className=" ms-3 nav-item">
+              <Link className="nav-link fw-bold" aria-current="page" to="/write">Schedule Match</Link>
             </li>
-            <li class=" ms-3 nav-item">
-              <Link class="nav-link active" aria-current="page" to="/">Declare Result</Link>
+            <li className=" ms-3 nav-item">
+              <Link className="nav-link fw-bold" aria-current="page" to="/">Declare Result</Link>
             </li>
-            <li class=" ms-3 nav-item">
-              <Link class="nav-link active" aria-current="page" to="/">Update Match</Link>
+            <li className=" ms-3 nav-item">
+              <Link className="nav-link fw-bold" aria-current="page" to="/">Update Match</Link>
             </li>
-            <li class=" ms-3 nav-item">
-              <Link class="nav-link active" aria-current="page" to="/">Bidder Details</Link>
+            <li className=" ms-3 nav-item">
+              <Link className="nav-link fw-bold" aria-current="page" to="/">Bidder Details</Link>
             </li>
            </ul>
         </div>

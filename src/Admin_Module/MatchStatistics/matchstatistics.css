@@ -1,0 +1,12 @@
+.match_card{
+    height: auto;
+}
+.date{
+font-size: 12px;
+}
+.stats_img{
+    width: 60px;
+    border-radius: 50%;
+    background-color: azure;
+
+}

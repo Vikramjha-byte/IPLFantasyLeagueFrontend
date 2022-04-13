@@ -1,0 +1,24 @@
+.update_form{
+    background: #1958165e;
+    padding: 30px;
+}
+
+.update_form > input, .update_form> textarea {
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.458);
+  border: none;
+  border-bottom: 2px solid rgb(6, 100, 16);
+  color: rgb(24, 69, 3);
+  border-radius: 10px;
+}
+.update_form>textarea{
+    height: auto;
+}
+.image {
+  border: none !important;
+  background-color: transparent !important;
+}
+.update_form> label{
+    margin: 10px 0;
+    color: rgb(255, 255, 255);
+}

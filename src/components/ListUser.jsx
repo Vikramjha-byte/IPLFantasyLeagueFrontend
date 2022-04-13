@@ -30,6 +30,7 @@ function ListUser() {
                 <td>{user.username}</td>
                 <td>{user.email}</td>
                 <td>{user.mobile_number}</td>
+                <td><button className="btn btn-success">Update</button></td>
               </tr>
             ))}
           </tbody>
