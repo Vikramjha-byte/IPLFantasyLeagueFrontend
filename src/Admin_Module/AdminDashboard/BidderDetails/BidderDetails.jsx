@@ -1,33 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AdminService from "../../Services/AdminService";
-import AdminHeader from "../AdminDashboard/AdminHeader/AdminHeader";
-import "./matchstatistics.css";
-function MatchStatistics() {
-  const [matches, setMatches] = useState([]);
-  const [admin, setAdmin] = useState("");
-  const navigate = useNavigate();
+import AdminService from "../../../Services/AdminService";
+import AdminHeader from "../AdminHeader/AdminHeader";
 
-  useEffect(() => {
-    AdminService.getMatches().then((response) => {
-      setMatches(response.data);
-    });
-    const loggedInUser = localStorage.getItem("admin");
-    if (loggedInUser) {
-      const foundUser = JSON.parse(loggedInUser);
-      setAdmin(foundUser);
+function BidderDetails() {
+    const [matches, setMatches] = useState([]);
+    const [admin, setAdmin] = useState("");
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+      AdminService.getMatches().then((response) => {
+        setMatches(response.data);
+      });
+      const loggedInUser = localStorage.getItem("admin");
+      if (loggedInUser) {
+        const foundUser = JSON.parse(loggedInUser);
+        setAdmin(foundUser);
+      }
+    }, []);
+    if (admin === "") {
+      return navigate("/master_admin");
     }
-  }, []);
-  if (admin === "") {
-    return navigate("/master_admin");
-  }
   return (
     <div>
       <AdminHeader />
       <div className="container-fluid p-0 manage_team">
         <div className="manage_container">
-
-          <h1 className="text-center p-4 mt-4 text-uppercase fs-4 ">====Matches====</h1>
+        <h1 className="text-center p-4 mt-4 text-uppercase fs-4 ">====Matches====</h1>
           {matches && matches.length > 0 ? (
             matches.slice(0).reverse().map((match) => (
               <div className="d-flex flex-column justify-content-center align-items-center">
@@ -61,30 +60,15 @@ function MatchStatistics() {
                     </div>
                   </div>
                   <div className="text-center">
-                    {match.status!=="Finished" ?
-                    match.status!=="Cancelled"?<div>
+                    <div>
                     <Link
-                      to={`/admin/result/${match.match_id}`}
+                      to={`/admin/biddetails/${match.match_id}`}
                       className="btn btn-success me-3 mb-4"
                     >
-                      Update Result
+                      Bid details
                     </Link>
                    
-                    </div> : <div>
-                    <button
-                      className="btn btn-success mb-4 me-3 disabled"
-                    >
-                      Update Result
-                    </button>
-                    
-                    </div>: <div>
-                    <button
-                      className="btn btn-success mb-4 me-3 disabled"
-                    >
-                      Update Result
-                    </button>
-                    
-                    </div> }
+                    </div> 
                     
                   </div>
                 </div>
@@ -104,4 +88,4 @@ function MatchStatistics() {
   );
 }
 
-export default MatchStatistics;
+export default BidderDetails;

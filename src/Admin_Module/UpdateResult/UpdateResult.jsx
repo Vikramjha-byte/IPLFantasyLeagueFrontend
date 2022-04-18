@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AdminService from "../../Services/AdminService";
 import AdminHeader from "../AdminDashboard/AdminHeader/AdminHeader";
 import "./updateResult.css";
@@ -8,14 +8,31 @@ function UpdateResult() {
   const [winteam, setWinTeam] = useState("");
   const [wonBy, setWonBy] = useState("");
   const [score, setScore] = useState("");
+  const [admin, setAdmin] = useState("");
+  const navigate = useNavigate();
   let winner = "";
-  let isValid=false;
-  let [scoreErr, setScoreErr] = useState("");
+  let isValid = false;
+  const [scoreErr, setScoreErr] = useState("");
+  const [wonByErr, setWonByErr] = useState("");
+  const [winteamErr, setWinteamErr] = useState("");
 
   const handleTheScore = () => {
+    let scoreErr,
+      wonByErr,
+      winteamErr = "";
+    if (winteam === "") {
+      winteamErr = "Please select the winner team";
+    }
+    if (score === "") {
+      scoreErr = "Score can't be empty";
+    }
+    if (wonBy === "") {
+      wonByErr = "Please select the respective option";
+    }
     if (wonBy === "run") {
       winner = `${winteam} won by ${score} run`;
-    } else {
+    }
+    if (wonBy === "wicket") {
       if (score <= 10 && score > 0) {
         winner = `${winteam} won by ${score} wickets`;
       } else {
@@ -23,12 +40,16 @@ function UpdateResult() {
       }
     }
 
-    if (scoreErr) {
+    if (scoreErr || winteamErr || wonByErr) {
       setScoreErr(scoreErr);
-      isValid=false;
+      setWonByErr(wonByErr);
+      setWinteamErr(winteamErr);
+      isValid = false;
     } else {
       setScoreErr(scoreErr);
-      isValid=true;
+      setWonByErr(wonByErr);
+      setWinteamErr(winteamErr);
+      isValid = true;
     }
   };
   const { match_id } = useParams();
@@ -38,14 +59,53 @@ function UpdateResult() {
       setMatch(res.data);
       //   console.log(res.data);
     });
+    const loggedInUser = localStorage.getItem("admin");
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setAdmin(foundUser);
+    }
   }, [match_id]);
+
+  if (admin === "") {
+    return navigate("/master_admin");
+  }
+
+  const submitTheResult = () => {
+    const details = {
+      winner: winner,
+      status: "Finished",
+    };
+    if(isValid===true){
+      AdminService.updateResult(match_id, details).then((res) => {
+        alert("Result Updated");
+        navigate("/admin/matchstats");
+      });
+    }
+  };
+const submitTheTied=()=>{
+  const details = {
+    winner: "Match Tied",
+    status: "Finished",
+  };
+  
+    AdminService.updateResult(match_id, details).then((res) => {
+      alert("Result Updated");
+      navigate("/admin/matchstats");
+    });
+  
+}
 
   //Click Handle of update button
   const handleResult = (e) => {
     e.preventDefault();
     handleTheScore();
-    console.log(winner);
+    submitTheResult();
   };
+
+  const handleTied=(e)=>{
+    e.preventDefault();
+    submitTheTied();
+  }
   return (
     <div>
       <AdminHeader />
@@ -75,6 +135,8 @@ function UpdateResult() {
                       </>
                     )}
                   </select>
+
+                  <p className="error">{winteamErr}</p>
                 </div>
                 <div className="won_radio">
                   <p>Won By :</p>
@@ -82,6 +144,7 @@ function UpdateResult() {
                     className="btn-group form-control border-0"
                     role="group"
                     aria-label="Basic radio toggle button group"
+                    value={wonBy}
                     onChange={(e) => setWonBy(e.target.value)}
                   >
                     <input
@@ -116,6 +179,7 @@ function UpdateResult() {
                       Wicket
                     </label>
                   </div>
+                  <p className="error">{wonByErr}</p>
                 </div>
                 <div className="score_div">
                   <div className="mb-3">
@@ -127,6 +191,7 @@ function UpdateResult() {
                       className="form-control"
                       id="teamScore"
                       name="score"
+                      value={score}
                       onChange={(e) => setScore(e.target.value)}
                     />
                     <p className="error">{scoreErr}</p>
@@ -140,7 +205,7 @@ function UpdateResult() {
                 >
                   Update Result
                 </button>
-                <button className="btn btn-outline-success p-3 m-3">
+                <button onClick={handleTied} className="btn btn-outline-success p-3 m-3">
                   Match Tied
                 </button>
               </div>

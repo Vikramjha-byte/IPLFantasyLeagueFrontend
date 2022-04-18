@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AdminService from "../../Services/AdminService";
 import "../AdminLogin/login.css"
@@ -8,9 +8,22 @@ function AdminLogin() {
   const [password, setPassword] = useState("");
   let [userNameErr, setUserNameErr] = useState("");
   let [passwordErr, setPasswordErr] = useState("");
+  const [admin, setAdmin] = useState();
   const navigate = useNavigate();
   let isValid = false;
   let errorDetails = "";
+
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("admin");
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setAdmin(foundUser);
+    }
+  }, []);
+  if (admin) {
+    return navigate("/admin/dashboard");
+  }
   //Validating the form
   const validateTheForm = () => {
     let userNameErr,
@@ -42,8 +55,10 @@ function AdminLogin() {
     if (isValid === true) {
       AdminService.doAdminLogin(admin)
         .then((res) => {
-          const data = res.data;
-          console.log(data.name);
+          // set the state of the user
+          setAdmin(res.data);
+          // store the user in localStorage
+          localStorage.setItem("admin", JSON.stringify(res.data));
           alert("Admin Logged In");
           navigate("/admin/dashboard");
         })
@@ -72,21 +87,7 @@ function AdminLogin() {
           <h1>Login</h1>
 
           <div className="card loginCard align-items-center rounded-3">
-            <div className="w-100 mt-4  d-flex flex-row justify-content-around social_btn">
-              <button className="btn loginFacebookBtn  btn-outline-primary text-center p-2 pe-4">
-                <span className="m-3">
-                  <i class="fa-brands fa-facebook-square"></i>
-                </span>
-                Facebook
-              </button>
-              <button className="btn loginGoogleBtn btn-outline-primary text-center p-2 pe-4">
-                <span className="m-3">
-                  <i class="fa-brands fa-google"></i>
-                </span>
-                Google
-              </button>
-            </div>
-            <div className="text-muted p-3 mt-4">or</div>
+            
             <form className="w-100 d-flex flex-column justify-content-center m-3 mt-0 p-3">
               <div className="p-3 mt-1 formInput">
                 <label htmlFor="username" className="text-muted">

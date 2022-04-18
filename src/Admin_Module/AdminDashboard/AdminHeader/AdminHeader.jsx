@@ -6,7 +6,9 @@ function AdminHeader() {
     <>
         <>
 
-    <nav className="navbar navbar-dark  position-fixed w-100 admin_nav" aria-label="IPLFANTASY">
+  
+
+    <nav className="navbar navbar-light position-fixed  w-100 admin_nav" aria-label="IPLFANTASY">
       <div className="container-fluid">
         <Link className="navbar-brand btn btn-dark text-white" to="/admin/dashboard">
         IPLFantasy
@@ -27,17 +29,12 @@ function AdminHeader() {
               <Link className="nav-link fw-bold" aria-current="page" to="/admin/matchstats">Match Statistics</Link>
             </li>
             <li className=" ms-3 nav-item">
-              <Link className="nav-link fw-bold" aria-current="page" to="/write">Schedule Match</Link>
+              <Link className="nav-link fw-bold" aria-current="page" to="/admin/creatematch">Create Match</Link>
             </li>
             <li className=" ms-3 nav-item">
-              <Link className="nav-link fw-bold" aria-current="page" to="/">Declare Result</Link>
+              <Link className="nav-link fw-bold" aria-current="page" to="/admin/bidderdetails">Bidder Details</Link>
             </li>
-            <li className=" ms-3 nav-item">
-              <Link className="nav-link fw-bold" aria-current="page" to="/">Update Match</Link>
-            </li>
-            <li className=" ms-3 nav-item">
-              <Link className="nav-link fw-bold" aria-current="page" to="/">Bidder Details</Link>
-            </li>
+            
            </ul>
         </div>
       </div>

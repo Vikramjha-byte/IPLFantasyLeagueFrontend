@@ -1,18 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import UserService from "../../Services/UserService";
 import "./login.css";
 function Login() {
-
   //Getting Values in the variable
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   let [userNameErr, setUserNameErr] = useState("");
   let [passwordErr, setPasswordErr] = useState("");
+  const [user, setUser] = useState();
   const navigate = useNavigate();
   let isValid = false;
   let errorDetails = "";
+  
 
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setUser(foundUser);
+    }
+  }, []);
+
+  if (user) {
+    return navigate("/daily/home");
+  }
   //Validating the form
   const validateTheForm = () => {
     let userNameErr,
@@ -46,10 +58,12 @@ function Login() {
     if (isValid === true) {
       UserService.doUserLogin(user)
         .then((res) => {
-          const data = res.data;
-          console.log(data.name);
+          // set the state of the user
+          setUser(res.data);
+          // store the user in localStorage
+          localStorage.setItem("user", JSON.stringify(res.data));
           alert("User Logged In");
-          navigate("/user_dashboard");
+          navigate("/daily/home");
         })
         .catch((error) => {
           errorDetails = error.response.data;
@@ -78,21 +92,6 @@ function Login() {
           <h1>Login</h1>
 
           <div className="card loginCard align-items-center rounded-3">
-            <div className="w-100 mt-4  d-flex flex-row justify-content-around social_btn">
-              <button className="btn loginFacebookBtn  btn-outline-primary text-center p-2 pe-4">
-                <span className="m-3">
-                  <i class="fa-brands fa-facebook-square"></i>
-                </span>
-                Facebook
-              </button>
-              <button className="btn loginGoogleBtn btn-outline-primary text-center p-2 pe-4">
-                <span className="m-3">
-                  <i class="fa-brands fa-google"></i>
-                </span>
-                Google
-              </button>
-            </div>
-            <div className="text-muted p-3 mt-4">or</div>
             <form className="w-100 d-flex flex-column justify-content-center m-3 mt-0 p-3">
               <div className="p-3 mt-1 formInput">
                 <label htmlFor="username" className="text-muted">

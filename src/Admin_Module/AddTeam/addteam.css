@@ -1,0 +1,25 @@
+
+.inputbox > input {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid green;
+  color: green;
+}
+.inputbox >input:focus{
+    outline: none;
+    box-shadow:none;
+    border-bottom: 1px solid green;
+}
+.inputbox > textarea {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid green;
+  }
+  .inputbox >textarea:focus{
+      outline: none;
+      box-shadow:none;
+      border-bottom: 1px solid green;
+  }
+  hr:not([size]) {
+    height: 5px;
+}

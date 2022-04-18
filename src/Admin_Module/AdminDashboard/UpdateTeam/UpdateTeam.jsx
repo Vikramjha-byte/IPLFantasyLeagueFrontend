@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AdminService from "../../../Services/AdminService";
 import AdminHeader from "../AdminHeader/AdminHeader";
 import "./updateteam.css";
 function UpdateTeam() {
+  ///////////////////////////////////////////Taking the variables///////////////////////////////////////////////////////
   const [team, setTeam] = useState([]);
-  // const [teamId, setTeamId] = useState("");
   const [teamIcon, setTeamIcon] = useState("");
   const [fullName, setFullName] = useState("");
   const [nameintial, setNameIntial] = useState("");
@@ -18,29 +18,30 @@ function UpdateTeam() {
   const [homegroundErr, setHomegroundErr] = useState("");
   const [playersErr, setPlayersErr] = useState("");
   const [captainErr, setCaptainErr] = useState("");
+  const [file, setFile] = useState();
+  const[admin,setAdmin]=useState("");
   const { team_id } = useParams();
   let isValid = false;
+  let isValidLogo = false;
+  const navigate = useNavigate();
 
-  //Validating the Form
+  //////////////////////////////////////////////////////////////////////////////////Validating the Form////////////////////////////////////
 
   const validateTheForm = () => {
-    let teamIconErr,
-      fullNameErr,
+    let fullNameErr,
       nameIntialErr,
       playersErr,
       captainErr,
       homegroundErr = "";
-
-    if (teamIcon.length < 1) {
-      teamIconErr = "Please upload the team icon";
-    }
+    ////////////////////////////-------------------------Full Name-----------------------///////////////////////
     if (fullName.length < 6) {
       fullNameErr = "Please Enter the valid Team Name";
     }
+    ////////////////////////////-------------------------Intial Name-----------------------///////////////////////
     if (nameintial.length < 2) {
       nameIntialErr = "Intial should be mimimum of 2 characters";
     }
-
+    ////////////////////////////-------------------------Players-----------------------///////////////////////
     let player = players.split(",");
     console.log(player.length);
     if (player.length !== 15) {
@@ -58,21 +59,22 @@ function UpdateTeam() {
       }
       console.log(playersErr);
     }
+    ////////////////////////////-------------------------Captain Name-----------------------///////////////////////
     if (captain.length < 6) {
       captainErr = "Please enter the valid name of captain";
     }
+    ////////////////////////////------------------------------Home Ground-----------------------///////////////////////
     if (homeGround.length < 6) {
       homegroundErr = "Please Enter the valid homeground";
     }
+    ////////////////////////////-------------------------Checking if error exist-----------------------///////////////////////
     if (
-      teamIconErr ||
       fullNameErr ||
       nameIntialErr ||
       playersErr ||
       captainErr ||
       homegroundErr
     ) {
-      setTeamIconErr(teamIconErr);
       setFullNameErr(fullNameErr);
       setNameIntialErr(nameIntialErr);
       setPlayersErr(playersErr);
@@ -80,7 +82,6 @@ function UpdateTeam() {
       setHomegroundErr(homegroundErr);
       isValid = false;
     } else {
-      setTeamIconErr(teamIconErr);
       setFullNameErr(fullNameErr);
       setNameIntialErr(nameIntialErr);
       setPlayersErr(playersErr);
@@ -89,16 +90,21 @@ function UpdateTeam() {
       isValid = true;
     }
   };
-
-  //Updating the Image to database
-  const updateTheImage = () => {
+  /////////////////////////////////////////////////////////////////////Updating the logo///////////////////////////////////////////////////////////////
+  const updateTheLogo = () => {
+    setFile(URL.createObjectURL(teamIcon));
     const formData = new FormData();
+    console.log(teamIcon);
     formData.append("image", teamIcon, teamIcon.name);
+    // formData.append("file", );
 
-    if (isValid === true) {
-      AdminService.updateTeam(team_id, formData).then((response) => {});
+    if (isValidLogo === true) {
+      AdminService.updateTeam(team_id, formData).then((res) => {
+        alert(res.data);
+      });
     }
   };
+  ////////////////////////////////////////////////////////////Updating the Team///////////////////////////////////////////////////////////////
   const updateTheData = () => {
     const team = {
       captain: captain,
@@ -108,52 +114,102 @@ function UpdateTeam() {
       team_players: players,
     };
     if (isValid === true) {
-      AdminService.updateTeamData(team_id, team).then((res) => {
+      AdminService.updateTeamdata(team_id, team).then((res) => {
         alert(res.data);
+        navigate("/admin/manageteams");
       });
     }
   };
+  ////////////////////////////////////////////////////////////////Validating the Logo/////////////////////////////////////////////////////////
+  const validatetheLogo = () => {
+    let teamIconErr = "";
+    if (teamIcon.length < 1) {
+      teamIconErr = "Please upload the team icon";
+    }
+    if (teamIconErr) {
+      setTeamIconErr(teamIconErr);
+      isValidLogo = false;
+    } else {
+      setTeamIconErr(teamIconErr);
+      isValidLogo = true;
+    }
+  };
+  /////////////////////////////////////////////////////Handle team logo Button////////////////////////////////////////////////////////////////////
+  const uploadteamlogo = (e) => {
+    e.preventDefault();
+    validatetheLogo();
+    updateTheLogo();
+  };
 
-  //Handling The Update Button call
+  /////////////////////////////////////////////////////////////////Handling The Update Button call//////////////////////////////////////////////////
 
   const handleUpdate = (e) => {
     e.preventDefault();
     validateTheForm();
-    updateTheImage();
     updateTheData();
   };
-
+  /////////////////////////////////////////////////////////////////Handling The Delete Button call//////////////////////////////////////////////////
+  const handleDelete = (e) => {
+    e.preventDefault();
+    AdminService.deleteTeam(team_id).then((response) => {
+      alert(response.data);
+      navigate("/admin/manageteams");
+    });
+  };
+  /////////////////////////////////////////////////////////////////////////////////Mounting Phase////////////////////////////////////////////
   useEffect(() => {
     AdminService.getTeamById(team_id).then((response) => {
       setTeam(response.data);
       console.warn(response.data);
     });
+    const loggedInUser = localStorage.getItem("admin");
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setAdmin(foundUser);
+    }
   }, [team_id]);
 
+  if (admin==="") {
+    return navigate("/master_admin");
+  }
+  ///////////////////////////////////////////////////Returning the HTML element//////////////////////////////////////////////////////////////////
   return (
     <div>
       <AdminHeader />
       <div className="container-fluid p-0 manage_team">
         <div className="manage_container">
           <div className="d-flex flex-column align-items-center justify-content-around">
-            <h2 className="text-center text-uppercase border border-3 rounded-3 p-3">
-              Edit Team Details
-            </h2>
             <img
               className="img-fluid team_photo mt-4"
               src={team.photos}
               alt=""
             />
+            <h2 className="text-center text-uppercase text-success rounded-3 p-3">
+              Edit Team Details
+            </h2>
+            {/*------------------------ Form Start--------------------------- */}
             <form className="d-flex flex-column col-lg-6 col-md-6 col-12  m-3 update_form">
-              <label htmlFor="teamIcon"> Team Logo :</label>
-              <input
-                className="image"
-                type="file"
-                name="teamIcon"
-                id="teamIcon"
-                defaultValue={team.photos}
-                onChange={(e) => setTeamIcon(e.target.files[0])}
-              />
+              <div className="text-dark d-flex flex-row flex-wrap  justify-content-between  rounded-3">
+                <label className="me-3 logo_label" htmlFor="teamIcon">
+                  {" "}
+                  Team Logo :
+                </label>
+                <input
+                  className="image"
+                  type="file"
+                  name="teamIcon"
+                  id="teamIcon"
+                  defaultValue={team.photos}
+                  onChange={(e) => setTeamIcon(e.target.files[0])}
+                />
+                <button
+                  onClick={uploadteamlogo}
+                  className="btn btn-success mt-4"
+                >
+                  {" "}
+                  Upload Logo
+                </button>
+              </div>
               <p className="error">{teamIconErr}</p>
               <label htmlFor="fullname">Team Name :</label>
               <input
@@ -207,13 +263,22 @@ function UpdateTeam() {
                 defaultValue={team.captain}
               />
               <p className="error">{captainErr}</p>
-              <button
-                className="btn btn-success mt-4 p-3 text-uppercase rounded-3"
-                onClick={handleUpdate}
-              >
-                Update
-              </button>
+              <div className="d-flex flex-row align-items-center justify-content-center">
+                <button
+                  className="btn btn-success m-3 mt-4 p-3  text-capitalize rounded-3"
+                  onClick={handleUpdate}
+                >
+                  Update Team
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="btn btn-danger text-center m-3 mt-4 p-3 text-capitalize"
+                >
+                  Delete Team
+                </button>
+              </div>
             </form>
+            {/*------------------------ Form End--------------------------- */}
           </div>
         </div>
       </div>

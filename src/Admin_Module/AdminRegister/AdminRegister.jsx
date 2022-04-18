@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AdminService from "../../Services/AdminService";
 
@@ -6,11 +6,26 @@ function AdminRegister() {
   //Setting the state using useState
   const [username, setUserName] = useState("");
   const [Password, setPassword] = useState("");
+  const[admin,setAdmin]=useState("");
   const navigate = useNavigate();
   let [userNameErr, setUserNameErr] = useState("");
   let [passwordErr, setPasswordErr] = useState("");
   let isValid = "";
   let errorDetails = "";
+
+
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("admin");
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setAdmin(foundUser);
+    }
+  }, []);
+
+  if (admin) {
+    return navigate("/admin/dashboard");
+  }
   //Validating the form
   const validateTheForm = () => {
     let userNameErr,
@@ -71,21 +86,6 @@ function AdminRegister() {
           <h1>Register</h1>
 
           <div className="card registerCard align-items-center rounded-3">
-            <div className="w-100 mt-4  d-flex flex-row justify-content-around social_btn">
-              <button className="btn registerFacebookBtn  btn-outline-primary text-center p-2 pe-4">
-                <span className="m-3">
-                  <i class="fa-brands fa-facebook-square"></i>
-                </span>
-                Facebook
-              </button>
-              <button className="btn registerGoogleBtn btn-outline-primary text-center p-2 pe-4">
-                <span className="m-3">
-                  <i class="fa-brands fa-google"></i>
-                </span>
-                Google
-              </button>
-            </div>
-            <div className="text-muted p-3 mt-4">or</div>
             <form className="w-100 d-flex flex-column justify-content-center m-3 mt-0 p-3">
               <div className="p-3 mt-1 formInput">
                 <label htmlFor="username" className="text-muted">

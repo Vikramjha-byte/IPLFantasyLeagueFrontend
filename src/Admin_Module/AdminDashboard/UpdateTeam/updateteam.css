@@ -1,5 +1,5 @@
 .update_form{
-    background: #1958165e;
+    background: #ffffff5e;
     padding: 30px;
 }
 
@@ -20,5 +20,10 @@
 }
 .update_form> label{
     margin: 10px 0;
-    color: rgb(255, 255, 255);
+    color: rgb(8, 82, 21);
+    font-weight: bold;
+}
+.logo_label{
+  color: rgb(8, 82, 21);
+    font-weight: bold;
 }
